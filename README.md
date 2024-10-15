@@ -35,6 +35,6 @@ Blocking traffic to server.docker on client side with iptables: `iptables -A OUT
 Viewing the existing IP tables rules: `iptables -L -n -v`
 Deleting previous rule. Traffic should flow again wth nc or in your Go client loop: `iptables -D OUTPUT -d server.docker -p tcp -j DROP`
 
-Then -- deploy this lash up into Istio in two different pods and do the same by hand after running 
+Then -- deploy this lash up into Envoy and do the same by hand after running 
 iptables by hand  in client container to simulate client talking to server through
 sidecar in client pod.
