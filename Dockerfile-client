@@ -22,7 +22,8 @@ RUN yum update -y && \
 RUN yum update -y && \
     yum install -y \
       iptables \
-      curl
+      curl \
+      nc
 
 # Download kubectl binary
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \

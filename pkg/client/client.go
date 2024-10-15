@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"time"
@@ -34,14 +35,17 @@ func main() {
 	ch := make(chan string, 1)
 	for i := 0; i < 100; i++ {
 		go Ping("tcp", "server.docker:8888", ch)
+		time.Sleep(2 * time.Second)
 	}
 
 	var m string
 	for i := 0; i < 100; i++ {
 		m = <-ch
 		log.Println(i+1, m)
+
+		fmt.Println("Sleeping for 2 seconds...")
+		time.Sleep(2 * time.Second)
 	}
 
 	log.Println(time.Since(start))
-
 }
