@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  client:
+    hostname: client.docker
+    container_name: client.docker
+    image:  ping-client:1.0
+    command: sh -c "./client"
+  server:
+    hostname: server.docker
+    container_name: server.docker
+    image:  ping-server:1.0
+    command: sh -c "./server"
+    ports:
+      - "8888:8888"
+networks:
+  default:
+    name: tcp-ping-pong

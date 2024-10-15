@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net"
 	"log"
+	"net"
 )
 
 func HandleConn(c net.Conn) {
@@ -26,7 +26,7 @@ func HandleConn(c net.Conn) {
 
 func main() {
 
-	l, err := net.Listen("tcp", "0.0.0.0:8888")
+	l, err := net.Listen("tcp", "server.docker:8888")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -43,6 +43,5 @@ func main() {
 		// handle connection
 		go HandleConn(conn)
 	}
-
 
 }

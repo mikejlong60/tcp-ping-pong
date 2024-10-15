@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net"
 	"log"
+	"net"
 	"time"
 )
 
@@ -33,7 +33,7 @@ func main() {
 
 	ch := make(chan string, 1)
 	for i := 0; i < 100; i++ {
-		go Ping("tcp", "0.0.0.0:8888", ch)
+		go Ping("tcp", "server.docker:8888", ch)
 	}
 
 	var m string
