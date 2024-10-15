@@ -1,0 +1,47 @@
+FROM golang:1.23.2-alpine3.20 as builder
+
+ENV GO111MODULE=on
+
+WORKDIR /go/src/github.com/mikejlong60/tcp-ping-pong
+
+COPY ./ ./
+
+RUN cd pkg && go mod vendor
+
+RUN cd pkg && go build -ldflags="-s -w" -o ../client -mod vendor ./client/client.go
+
+FROM redhat/ubi8:8.8
+
+USER root
+RUN yum update -y && \
+    yum install -y \
+    ca-certificates \
+    && yum clean all
+
+# Install iptables and dependencies
+RUN yum update -y && \
+    yum install -y \
+      iptables \
+      curl
+
+# Download kubectl binary
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
+    && chmod +x kubectl \
+    && mv kubectl /usr/local/bin/
+
+USER 1000
+
+WORKDIR /app
+
+COPY --from=builder /go/src/github.com/mikejlong60/tcp-ping-pong/client ./client
+
+## Add the wait script to the image
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.8.0/wait ./wait
+
+USER root
+RUN chmod +x ./wait
+
+USER 1000
+CMD ./client
+
+EXPOSE 4000

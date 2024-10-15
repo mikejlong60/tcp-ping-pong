@@ -1,20 +1,30 @@
-VERSION?=0.1
-IMAGE_NAME?=portforward
+VERSION?=1.0
 
-docker-build-internal: ## build docker image with VERSION tag
+
+help: ## list available commands
+	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-30s\033[0m %s\n", $$1, $$2}'
+
+docker-build-server: ## build docker image with VERSION tag
 	$(eval COMMIT=$(shell git rev-parse --short HEAD))
 	$(eval ISDIRTY=$(shell git diff-index --quiet HEAD -- || echo '-dirty'))
+	$(eval IMAGE_NAME=ping-server)
+	$(eval VERSION=1.0)
 	docker build \
-    --file ./Dockerfile \
+	--build-arg COMMIT="${COMMIT}" \
+	--build-arg TAG="${VERSION}" \
+	--build-arg ISDIRTY="${ISDIRTY}" \
+	--no-cache --rm --tag $(IMAGE_NAME):$(VERSION) \
+	 -f Dockerfile-server .
+
+docker-build-client: ## build docker image with VERSION tag
+	$(eval VERSION=1.0)
+	$(eval COMMIT=$(shell git rev-parse --short HEAD))
+	$(eval ISDIRTY=$(shell git diff-index --quiet HEAD -- || echo '-dirty'))
+	$(eval IMAGE_NAME=ping-client)
+	docker build \
 	--build-arg TAG="${VERSION}" \
 	--build-arg COMMIT="${COMMIT}" \
 	--build-arg ISDIRTY="${ISDIRTY}" \
 	--no-cache --rm --tag $(IMAGE_NAME):$(VERSION) \
-	.
+	 -f Dockerfile-client .
 
-docker-build: docker-build-internal ## build docker image on passing unit tests
-
-docker-push: ## push docker image
-	docker push $(IMAGE_NAME):$(VERSION)
-
-docker-build-push: docker-build docker-push ## build and push docker image
