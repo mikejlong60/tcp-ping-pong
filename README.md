@@ -16,8 +16,9 @@ Deployment in Plain docker compose
 
 You should see successful ping-pong logs between client and server.
 
-Now -- Use iptables to restrict access from client to server by telling client to redirect 
-   egress to another port on server with iptables. Connection to server should fail.
+Now -- Use iptables in client container(you added it with Makefile)
+    to restrict access from client to server by telling client to redirect 
+egress to another port on server with iptables. Connection to server should fail.
 
 Then -- deploy this lash up into Istio in two different pods and do the same by hand after running 
 iptables by hand  in client container to simulate client talking to server through
