@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net"
 )
 
@@ -26,7 +26,7 @@ func HandleConn(c net.Conn) {
 
 func main() {
 
-	l, err := net.Listen("tcp", "envoy:8888")
+	l, err := net.Listen("tcp", "0.0.0.0:8888")
 	if err != nil {
 		log.Fatal(err)
 	}

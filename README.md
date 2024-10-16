@@ -38,3 +38,6 @@ Deleting previous rule. Traffic should flow again wth nc or in your Go client lo
 Then -- deploy this lash up into Envoy and do the same by hand after running 
 iptables by hand  in client container to simulate client talking to server through
 sidecar in client pod.
+
+
+
