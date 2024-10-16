@@ -26,7 +26,7 @@ func HandleConn(c net.Conn) {
 
 func main() {
 
-	l, err := net.Listen("tcp", "server.docker:8888")
+	l, err := net.Listen("tcp", "envoy:8888")
 	if err != nil {
 		log.Fatal(err)
 	}
