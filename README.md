@@ -11,7 +11,7 @@ Building:
 * make docker-build-server
 
 
-Deployment in Plain docker compose
+Deployment in Plain docker compose(on master branch))
 * docker compose up
 
 You should see successful ping-pong logs between client and server.  
@@ -41,3 +41,6 @@ sidecar in client pod.
 
 
 
+This TCP Client Server(on with-envoy branch) running inside a containerized Envoy setup where the TCP Client's pings to the TCP Server go
+through an Envoy proxy.
+`docker compose -f envoy-docker-compose.yaml up`
