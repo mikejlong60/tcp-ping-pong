@@ -12,6 +12,7 @@ services:
   tcp-client:
     image: ping-client:1.0
     command: sh -c "./client"
+    hostname: client.docker
     privileged: true
     networks:
       - my-network
@@ -24,6 +25,7 @@ services:
   tcp-server:
     image: ping-server:1.0
     command: sh -c "./server"
+    hostname: server.docker
     networks:
       - my-network
     environment:

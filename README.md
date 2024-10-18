@@ -44,3 +44,24 @@ sidecar in client pod.
 This TCP Client Server(on with-envoy branch) running inside a containerized Envoy setup where the TCP Client's pings to the TCP Server go
 through an Envoy proxy.
 `docker compose -f envoy-docker-compose.yaml up`
+
+
+Notes on Further Work:  10/18/2024
+I gleaned a set of IP Tables rules with the help of Chat GPT 
+that are close to what Envoy uses when it is running inside Istio with sidecar injection. And I have confirmed
+that all the rules at least execute without error.  And running them breaks connectivity of the client to server and
+the container crashes. 
+
+You do not need to enable CNI mode for Istio.  The rules should be the same anyway. And Kind and Istio and Envoy do not seem to work
+with CNI enabled.  All the rules here execute without error. Delete them all with the delete script.
+One caveat is that you will have to confirm the UID of an Envoy Sidecar in a Kubernetes Pod and adjust the rule
+that qualifies on that value. This is why I say we need to start using Kubernetes now and the current setup of Docker compose won't work. 
+
+They are in iptables_rulesets directory in the client image.
+
+Next Steps:
+  Goal - Improve your understanding of the IP tables rules for Sidecar redirection and verify/correct the rules you got from Chat GPT.
+ - Steps
+   - Switch over to an Istio install with my TCP client running in its own pod and my TCP server running in another pod.
+   - Look at the IP tables rules in your ruleset and see how accurate your rules are given that you have Istio configured to have the same requirement(i.e force the redirection of packets from the client to go through the Envoy sidecar in the Client pod).
+

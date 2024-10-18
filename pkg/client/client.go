@@ -44,7 +44,7 @@ func main() {
 	ch := make(chan string, 1)
 	for i := 0; i < 100; i++ {
 		log.Debug("8")
-		go Ping("tcp", "envoy:10000", ch)
+		go Ping("tcp", "server.docker:8888", ch)
 		log.Debug("9")
 		time.Sleep(2 * time.Second)
 	}
